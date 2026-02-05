@@ -92,6 +92,7 @@
 - [MiniMax S2V-01](https://docs.modellix.ai/minimax/minimax-s2v-01.md): The MiniMax S2V-01 is a specialized subject reference video model designed to solve the industry challenge of character consistency. It can generate dynamic videos where the main character's identity stays highly consistent across every frame, using just a single photo as a reference and at a computational cost significantly lower than traditional solutions.
 - [MiniMax T2V-01](https://docs.modellix.ai/minimax/minimax-t2v-01.md): MiniMax T2V-01 is a text-to-video model that uniquely delivers professional-level camera movement control, transforming written prompts into cinematic video clips with dynamic shots.
 - [MiniMax T2V-01-Director](https://docs.modellix.ai/minimax/minimax-t2v-01-director.md): T2V-01-Director is a text-to-video AI model that offers precise camera control, allowing users to create professional-looking video clips with cinematic movements through a variety of lens instructions
+- [Agent Skill](https://docs.modellix.ai/ways-to-use/agent-skill.md)
 - [Error Handling](https://docs.modellix.ai/ways-to-use/error-handling.md): Learn about error codes, messages, and best practices for the Prediction API.
 - [MCP](https://docs.modellix.ai/ways-to-use/mcp.md): Modellix Docs MCP Server allows you to search the Modellix documentation in your MCP clients.
 - [Steps](https://docs.modellix.ai/ways-to-use/steps.md): The steps to use the Modellix models API, including how to get an API key, how to use the API, and how to get the result.

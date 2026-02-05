@@ -8,151 +8,201 @@ metadata:
 
 ## Capabilities
 
-Modellix is a unified API platform that enables agents to access 100+ AI models for generative tasks. Agents can generate images from text, create videos from text or images, edit existing images, and perform specialized tasks like virtual try-on, image outpainting, and text-based image translation. The platform supports asynchronous task processing with full request/response logging and transparent pricing.
+Modellix is a unified Model as a Service (MaaS) platform that provides API access to 100+ AI models covering generative AI tasks. Agents can leverage Modellix to generate images from text, create videos from text or images, edit existing images, translate image text, perform virtual try-ons, and more. The platform supports asynchronous task processing with transparent pricing, detailed logging, and enterprise-grade reliability backed by 15 years of IT service expertise.
 
 ## Skills
 
 ### Text-to-Image Generation
-- Generate images from text prompts using models like Qwen Image Plus, Wanx, Seedream, and Hailuo
-- Supports multiple artistic styles and high-quality image generation
-- Endpoint: `POST /api/v1/text-to-image/{provider}/{model_id}/async`
-- Example: `curl -X POST https://api.modellix.ai/api/v1/text-to-image/alibaba/qwen-image-plus/async -H "Authorization: Bearer YOUR_API_KEY" -d '{"prompt": "A cute cat playing in a garden"}'`
+Generate high-quality images from text prompts using models like Qwen Image, Wan 2.6 T2I, and Seedream series. Models support multiple styles, aspect ratios, and creative parameters.
+
+**Endpoint**: `POST /api/v1/text-to-image/{provider}/{model}/async`
+
+**Example**:
+```bash
+curl --request POST \
+  --url https://api.modellix.ai/api/v1/text-to-image/alibaba/qwen-image-plus/async \
+  --header 'Authorization: Bearer <api_key>' \
+  --header 'Content-Type: application/json' \
+  --data '{"prompt": "A cute cat playing in a garden on a sunny day"}'
+```
+
+### Image-to-Image Transformation
+Edit and transform existing images using text prompts. Capabilities include image editing, style transfer, object addition/removal, color adjustment, and detail enhancement. Models like Qwen Image Edit Plus and Wan 2.6 Image support precise bilingual text editing and multi-image fusion.
+
+**Endpoint**: `POST /api/v1/image-to-image/{provider}/{model}/async`
 
 ### Text-to-Video Generation
-- Create videos from text descriptions with cinematic quality
-- Models include Wan 2.6 T2V, Seedance, and Hailuo 02 T2V
-- Supports automatic dubbing and custom audio file uploads
-- Endpoint: `POST /api/v1/text-to-video/{provider}/{model_id}/async`
-- Charged by video duration (USD/sec)
+Create videos from text descriptions with cinematic quality. Models like Seedance 1.5 Pro and Wan 2.6 T2V support multi-shot narrative capabilities, automatic dubbing, and custom audio file uploads.
 
-### Image-to-Image Editing
-- Edit existing images through text instructions
-- Capabilities include style transfer, watermark removal, image expansion, detail enhancement, and object addition/removal
-- Models: Wanx 2.1 Image Edit, Qwen Image Edit Plus, Seedream 4.0+ I2I, Seededit 3.0
-- Endpoint: `POST /api/v1/image-to-image/{provider}/{model_id}/async`
+**Endpoint**: `POST /api/v1/text-to-video/{provider}/{model}/async`
 
 ### Image-to-Video Generation
-- Generate videos from image references combined with text prompts
-- Supports first-and-last-frame video generation (KF2V models)
-- Models: Wan 2.6 I2V, Seedance I2V, Hailuo 02 I2V
-- Endpoint: `POST /api/v1/image-to-video/{provider}/{model_id}/async`
-- Charged by video duration (USD/sec)
+Convert static images into video sequences with motion and animation. Models like Wan 2.6 I2V and Seedance support rich artistic styles, multi-shot narratives, and audio integration.
 
-### Specialized Image Tasks
-- **Virtual Try-On**: Generate try-on images from portrait and clothing photos (AI Try-On, AI Try-On Plus)
-- **Image Outpainting**: Extend images with free expansion and rotation support
-- **Image Translation**: Translate text in images across 11 languages while preserving layout
-- **WordArt**: Create artistic text with semantic deformation or texture effects
-- **Image Parsing**: Segment model and clothing images for preprocessing
+**Endpoint**: `POST /api/v1/image-to-video/{provider}/{model}/async`
 
-### Async Task Management
-- Submit tasks and receive immediate task_id response
-- Query task status and results using: `GET /api/v1/tasks/{task_id}`
-- Task results include resource URLs, metadata, and timing information
-- Results retained for 24 hours after completion
-- Response includes status (pending/success/failed), duration, and generated resources
+### Image Editing Operations
+Perform specialized image editing tasks including:
+- Text editing in images (bilingual Chinese-English support)
+- Color adjustment and enhancement
+- Style transfer and repaint
+- Object addition and removal
+- Image outpainting (free extension with rotation and expansion)
+- Background generation
+- Sketch-to-image conversion
 
-### API Authentication & Key Management
-- Create, view, and delete API keys through Modellix console
-- Authentication via Bearer token: `Authorization: Bearer YOUR_API_KEY`
-- API keys displayed only once after creation
-- Support for Email OTP, Google, and GitHub authentication
+### Virtual Try-On and Fashion
+Generate AI virtual try-on effects for clothing and fashion applications. Models like AI Try-On, AI Try-On Plus, and AI Try-On Refiner support garment fitting visualization with secondary refinement for higher fidelity results.
 
-### Rate Limiting & Quotas
-- Global limit: 1000 requests/minute
-- Per API key limit: 100 requests/minute
-- Per model limits subject to provider constraints
-- Response headers include: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
-- Concurrent task limits enforced per team
+### Image Translation
+Translate text within images across 11 languages using Qwen MT Image. Preserves original layout and content information with custom features like terminology definitions and sensitive word filtering.
 
-### Error Handling
-- Unified error response format with code and message fields
-- HTTP status codes: 200 (success), 400 (bad request), 401 (unauthorized), 404 (not found), 429 (rate limit), 500 (server error), 503 (service unavailable)
-- Error categories: Invalid parameters, Missing required parameter, Invalid format, Value out of range, Authentication failed, Resource not found, Rate limit exceeded, Concurrent limit exceeded
-- Retryable errors: 429, 500, 503 with exponential backoff strategy
+### Specialized Image Generation
+- **Wordart Creation**: Generate artistic text with textures and 3D effects
+- **Sketch-to-Image**: Convert sketches into detailed images
+- **Background Generation**: Create backgrounds for images
+- **Image Outpainting**: Extend images with free expansion in all directions
 
-### Request/Response Logging
-- Complete logging of all API calls including input parameters, output parameters, timestamps, response time, and cost consumption
-- Financial-grade transaction ledger system for every user
-- Real-time visibility into recharge records and consumption details
-- Supports business optimization and audit compliance
+### Task Management
+Query the status and results of asynchronous tasks using task IDs.
+
+**Endpoint**: `GET /api/v1/tasks/{task_id}`
+
+**Response Example**:
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "status": "success",
+    "task_id": "task-abc123",
+    "model_id": "qwen-image-plus",
+    "duration": 3500,
+    "result": {
+      "resources": [
+        {
+          "url": "https://cdn.example.com/images/abc123.png",
+          "type": "image",
+          "width": 1024,
+          "height": 1024,
+          "format": "png",
+          "role": "primary"
+        }
+      ]
+    }
+  }
+}
+```
 
 ## Workflows
 
 ### Basic Image Generation Workflow
-1. Register and log in to Modellix console
-2. Create API key at https://modellix.ai/console/api-key
-3. Submit text-to-image request: `POST /api/v1/text-to-image/alibaba/qwen-image-plus/async`
-4. Receive task_id in response
-5. Poll task status: `GET /api/v1/tasks/{task_id}`
-6. Retrieve generated image URL from result when status is "success"
-7. Download image before 24-hour expiration
+1. Register and obtain API key from Modellix console
+2. Submit text-to-image request with prompt: `POST /api/v1/text-to-image/alibaba/qwen-image-plus/async`
+3. Receive `task_id` in response
+4. Poll task status: `GET /api/v1/tasks/{task_id}`
+5. Download generated image from result URL when status is "success"
+6. Save results within 24 hours (results expire after 24 hours)
 
-### Video Generation with Custom Audio
-1. Prepare text prompt describing desired video
-2. Submit text-to-video request with optional audio parameters
-3. Receive task_id
-4. Monitor task progress via polling or streaming interface
-5. Retrieve video URL and metadata when complete
-6. Extract video duration for cost calculation (charged per second)
-
-### Image Editing Pipeline
-1. Prepare source image and editing instructions
-2. Submit image-to-image request with image URL and text prompt
-3. Receive task_id
+### Video Generation with Audio Workflow
+1. Prepare text prompt or reference image
+2. Submit text-to-video or image-to-video request to Wan 2.6 or Seedance model
+3. Optionally specify automatic dubbing or provide custom audio file
 4. Query task status until completion
-5. Retrieve edited image from result resources
-6. Optionally chain multiple edits by using output as input
+5. Retrieve video from result resources
+6. Download and process video content
 
-### Error Recovery with Retry Logic
-1. Attempt API request
-2. Check response code
-3. If 429: Extract X-RateLimit-Reset header, wait until reset time
-4. If 500/503: Apply exponential backoff (1s, 2s, 4s) with max 3 retries
-5. If 400/401/404: Fix request parameters and retry
-6. Log error details including timestamp, parameters, and error message
+### Image Editing Workflow
+1. Prepare source image and editing instructions
+2. Submit image-to-image request with prompt describing desired edits
+3. For text editing, use Qwen Image Edit Plus with bilingual support
+4. Query task status for completion
+5. Retrieve edited image from results
+6. Apply secondary refinement if needed using AI Try-On Refiner
+
+### Multi-Step Image Creation Workflow
+1. Generate base image using text-to-image
+2. Retrieve generated image URL
+3. Apply style transfer or editing using image-to-image
+4. Optionally extend image using outpainting
+5. Apply final refinements
+6. Download final result
 
 ## Integration
 
 ### MCP (Model Context Protocol) Integration
-- Remote MCP server available at: `https://docs.modellix.ai/mcp`
-- Compatible with Cursor, Claude Desktop, and other MCP clients
-- Search tool for Modellix documentation with filter parameters (version, language, apiReferenceOnly, codeOnly)
-- Enables AI applications to search documentation during response generation
+Modellix provides a remote MCP server for documentation search at `https://docs.modellix.ai/mcp`. Compatible with Cursor, Claude Desktop, and other MCP clients. Enables AI applications to search Modellix documentation directly.
 
-### OpenAI Integration
-- Use Modellix as remote MCP server with OpenAI models
-- Configure MCP tool in OpenAI API calls with server URL and label
-- Allows GPT models to access Modellix documentation and capabilities
+**OpenAI Integration Example**:
+```python
+from openai import OpenAI
 
-### Multi-Provider Support
-- Alibaba (Qwen, Wanx, Wan models)
-- ByteDance (Seedream, Seedance, Seededit)
-- MiniMax (Hailuo, Image-01)
-- Additional providers continuously added
+client = OpenAI()
+
+resp = client.responses.create(
+    model="gpt-4.1",
+    tools=[
+        {
+            "type": "mcp",
+            "server_label": "modellix-docs",
+            "server_url": "https://docs.modellix.ai/mcp",
+            "require_approval": "never",
+        },
+    ],
+    input="Do you have access to the modellix docs mcp server?",
+)
+```
+
+### Agent Skills Integration
+Add Modellix Skill to development projects using:
+```bash
+npx skills add https://github.com/Modellix/modellix-skill
+```
+
+Supports integration with Claude Code, Cursor, Codex, Antigravity, Gemini CLI, OpenCode, and GitHub Copilot.
+
+### API Authentication
+All requests require Bearer token authentication:
+```bash
+Authorization: Bearer <your_api_key>
+```
 
 ## Context
 
-### Async Processing Model
-All Modellix API calls are asynchronous. Agents must submit a request, receive a task_id, then poll the task status endpoint to retrieve results. This enables handling of long-running generation tasks without blocking connections.
+### Asynchronous Processing Model
+All model API calls are asynchronous. Requests return immediately with a `task_id`, and results must be queried separately. This enables efficient handling of long-running generation tasks.
 
 ### Pricing Structure
-- Text-to-image and image-to-image: Charged per image (USD/img)
-- Text-to-video and image-to-video: Charged per second of video (USD/sec)
+- **Text-to-Image & Image-to-Image**: Charged per image (USD/img)
+- **Text-to-Video & Image-to-Video**: Charged per second of video (USD/sec)
 - Transparent pricing with granular unit costs for different models and parameters
-- More competitive rates for select core models compared to official pricing
+
+### Supported Providers
+- **Alibaba**: Qwen, Wan, Wanx, WordArt models
+- **ByteDance**: Seedance video generation models
+- **MiniMax**: Hailuo, MiniMax Image/Video models
+
+### Error Handling
+Unified error response format with categorized messages:
+- **400**: Bad Request (invalid parameters, missing required fields)
+- **401**: Unauthorized (invalid/missing API key)
+- **404**: Not Found (task or resource doesn't exist)
+- **429**: Rate limit exceeded (team rate limit or concurrent task limit)
+- **500**: Internal server error
+- **503**: Service unavailable
+
+Rate limit headers provided: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
 
 ### Result Retention
-Generated results are stored for 24 hours after task completion. Agents must download or save results within this window or they will be permanently deleted.
+Generated results are retained for 24 hours. Agents must download and save results within this timeframe.
 
-### Rate Limiting Strategy
-Team-level rate limiting applies to all API keys under the same account. Agents should implement client-side concurrency control and monitor X-RateLimit-Remaining header to avoid frequent limit triggers. Exponential backoff is recommended for retryable errors.
-
-### Enterprise Reliability
+### Enterprise Features
+- Full-stack request/response logging with timestamps and cost tracking
+- Detailed transaction ledger for every API call
+- Financial-grade transaction clarity for audit and compliance
 - AWS Singapore infrastructure with redundant deployment
-- 15-year enterprise IT service experience
-- Rolling upgrades and strict SLA operational standards
-- Support in Mandarin, Cantonese, and English via email and Discord community
+- SLA operational standards for high availability
+- Support in Mandarin, Cantonese, and English via email and Discord
 
 ---
 
