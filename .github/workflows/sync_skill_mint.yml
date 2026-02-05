@@ -22,7 +22,7 @@ jobs:
           mkdir -p references
           
           # Sync SKILL.md
-          curl -L -s -o "modellix/SKILL.md" "https://docs.modellix.ai/skill.md"
+          curl -L -s -o "SKILL.md" "https://docs.modellix.ai/skill.md"
           
           # Sync REFERENCE.md
           curl -L -s -o "references/REFERENCE.md" "https://docs.modellix.ai/llms.txt"
