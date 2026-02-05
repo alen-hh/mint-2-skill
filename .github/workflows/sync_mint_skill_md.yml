@@ -1,0 +1,35 @@
+name: Sync Skill Doc
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # 每 6 小时检查一次更新
+  workflow_dispatch:      # 允许你在 Actions 界面手动点击运行（方便调试）
+
+jobs:
+  update-md:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write     # 确保 Action 有权限推送代码到你的仓库
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Fetch Remote Markdown
+        run: |
+          # 使用 curl 下载文件并覆盖本地的 SKILL.md
+          curl -L -s -o "SKILL.md" "https://docs.modellix.ai/skill.md"
+
+      - name: Commit and Push if Changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 检查文件是否有变动
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add SKILL.md
+            git commit -m "chore: sync SKILL.md from remote source"
+            git push
+          else
+            echo "No changes detected, skipping commit."
+          fi
