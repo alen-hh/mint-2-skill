@@ -1,31 +1,31 @@
 # Mint 2 Skill
 
-[Mintlify](https://www.mintlify.com/) 文档本身是自带 `SKILL.md` 的，仅需要在您的文档 URL 后添加 `/skill.md` 即可查看，例如：[docs.modellix.ai/skill.md](docs.modellix.ai/skill.md).
+[Mintlify](https://www.mintlify.com/) docs come with a built-in `SKILL.md` — simply append `/skill.md` to your docs URL to view it, e.g. [docs.modellix.ai/skill.md](docs.modellix.ai/skill.md).
 
-但是，这个单一的`SKILL.md`文档还是较为简陋，信息量较少，对于某些具有一定规模的业务或产品来说，显得不太够用。
+However, this single `SKILL.md` file is fairly basic and contains limited information, which may not be sufficient for businesses or products of a certain scale.
 
-因此，我想到了利用 Mintlify 已有的能力，将文档提升为一个更完整的 Agent Skill 的方式，就是将 Mintlify 为各文档预设的`/skill.md`和`/llms.txt`通过 Github Action 同步到 Github Repo 内，成为一个相对信息量更加完整的 Agent Skill，以让使用体验更佳。
+To address this, I came up with a way to leverage Mintlify's existing capabilities to turn your docs into a more complete Agent Skill. The idea is to sync the `/skill.md` and `/llms.txt` endpoints that Mintlify provides for each docs site into a GitHub repo via GitHub Actions, resulting in a more information-rich Agent Skill for a better experience.
 
-本项目，就是一个将您的 Mintlify 文档自动同步为一个 Agent Skill 并托管在 Github Repo 内的 Starter。具体使用方式如下。
+This project is a starter template that automatically syncs your Mintlify docs into an Agent Skill hosted in a GitHub repo. Usage instructions are below.
 
-## 思路
+## Approach
 
-利用 Github Action，定时从`/skill.md`和`/llms.txt`同步内容到 Github Repo 内，映射关系如下：
+A GitHub Action periodically syncs content from `/skill.md` and `/llms.txt` into the GitHub repo. The mapping is as follows:
 
-| Mint | Github |
+| Mint | GitHub |
 |---|---|
 | `/skill.md` | `SKILL.md` |
-| `/llms.txt` | `/references/REFERECE.md` |
+| `/llms.txt` | `/references/REFERENCE.md` |
 
-## 执行方式
+## Getting Started
 
-一、clone 本项目
+### 1. Clone this project
 
 `git clone xxx`
 
-二、修改 Cron 和文档 URL
+### 2. Configure the cron schedule and docs URL
 
-在本项目中找到`/.github/workflows/sync_skill_mint.yml`，找到：
+In this project, locate `/.github/workflows/sync_skill_mint.yml` and find:
 
 ```yml
 on:
@@ -37,16 +37,16 @@ env:
   DOCS_BASE_URL: https://your-docs.url/ # Replace with your actual docs URL
 ```
 
-将`cron`修改为您想要定时同步的时间间隔，将`DOCS_BASE_URL`修改为您的 Mintlify 文档 URL。
+Change the `cron` value to your desired sync interval, and replace `DOCS_BASE_URL` with your Mintlify docs URL.
 
-三、创建您的 Repo
+### 3. Create your repo
 
-创建您的 Repo，将项目托管上 Github。
+Create your own repo and push the project to GitHub.
 
-您可以到 Actions 内手动测试一下该 Workflow 是否生效。
+You can go to the Actions tab to manually test whether the workflow is working correctly.
 
 ---
 
-项目例子：[Modellix Skill](https://github.com/Modellix/modellix-skill)
+Example project: [Modellix Skill](https://github.com/Modellix/modellix-skill)
 
-希望各位喜欢该项目～
+Hope you enjoy this project!
