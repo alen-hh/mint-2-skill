@@ -6,7 +6,7 @@ on:
   workflow_dispatch:      # Allows manual trigger
 
 env:
-  DOCS_BASE_URL: https://agentskills.io/
+  DOCS_BASE_URL: https://your-docs.url/ # Replace with your actual docs URL
 
 jobs:
   update-docs:
@@ -21,7 +21,6 @@ jobs:
       - name: Fetch Remote Files
         run: |
           # Ensure target directories exist
-          mkdir -p modellix
           mkdir -p references
           
           # Sync SKILL.md

@@ -1,27 +1,52 @@
-# Modellix Agent Skill
+# Mint 2 Skill
 
-This Agent Skill provides seamless integration with the Modellix platform, enabling AI agents to leverage a comprehensive suite of over 100 generative AI models for a wide range of creative and analytical tasks.
+[Mintlify](https://www.mintlify.com/) 文档本身是自带 `SKILL.md` 的，仅需要在您的文档 URL 后添加 `/skill.md` 即可查看，例如：[docs.modellix.ai/skill.md](docs.modellix.ai/skill.md).
 
-## What is Modellix?
+但是，这个单一的`SKILL.md`文档还是较为简陋，信息量较少，对于某些具有一定规模的业务或产品来说，显得不太够用。
 
-[Modellix](https://modellix.ai) is a unified Model as a Service (MaaS) platform that offers API access to a vast collection of cutting-edge AI models. It empowers agents to perform tasks such as generating high-quality images from text, creating videos from text or images, editing existing images with precision, translating text within images, and executing virtual try-on functionalities. The platform is built for enterprise-grade reliability, featuring asynchronous task processing, transparent pricing, detailed logging, and robust support backed by extensive IT service expertise.
+因此，我想到了利用 Mintlify 已有的能力，将文档提升为一个更完整的 Agent Skill 的方式，就是将 Mintlify 为各文档预设的`/skill.md`和`/llms.txt`通过 Github Action 同步到 Github Repo 内，成为一个相对信息量更加完整的 Agent Skill，以让使用体验更佳。
 
-Key capabilities include:
+本项目，就是一个将您的 Mintlify 文档自动同步为一个 Agent Skill 并托管在 Github Repo 内的 Starter。具体使用方式如下。
 
-*   **Text-to-Image Generation**: Utilizing models like Qwen Image, Wan 2.6 T2I, and Seedream series to create diverse images from text prompts.
-*   **Image-to-Image Transformation**: Editing and transforming images with text prompts, including style transfer, object manipulation, and color adjustments.
-*   **Text-to-Video Generation**: Producing cinematic-quality videos from text descriptions with advanced features like multi-shot narratives and custom audio integration.
-*   **Image-to-Video Generation**: Converting static images into dynamic video sequences with motion and animation.
-*   **Specialized Image Editing**: Performing tasks such as bilingual text editing in images, outpainting, background generation, and sketch-to-image conversion.
-*   **Virtual Try-On and Fashion**: Generating realistic virtual try-on effects for clothing applications.
-*   **Image Translation**: Translating text within images across multiple languages.
+## 思路
 
-Modellix supports asynchronous task processing, ensuring efficient handling of long-running generation tasks. Pricing is transparent and based on usage units (per image or per second of video).
+利用 Github Action，定时从`/skill.md`和`/llms.txt`同步内容到 Github Repo 内，映射关系如下：
 
-## More Information
+| Mint | Github |
+|---|---|
+| `/skill.md` | `SKILL.md` |
+| `/llms.txt` | `/references/REFERECE.md` |
 
-*   **Docs**: [docs.modellix.ai](https://docs.modellix.ai)
-*   **Support**: [support@modellix.ai](mailto:support@modellix.ai)
-*   **Community**: [Discord](https://discord.gg/N2FbcB2cZT)
+## 执行方式
 
-This README.md is automatically updated by [GPTBots.ai](https://gptbots.ai) and [Github Actions](https://github.com/features/actions).
+一、clone 本项目
+
+`git clone xxx`
+
+二、修改 Cron 和文档 URL
+
+在本项目中找到`/.github/workflows/sync_skill_mint.yml`，找到：
+
+```yml
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Runs every 6 hours
+  workflow_dispatch:      # Allows manual trigger
+
+env:
+  DOCS_BASE_URL: https://your-docs.url/ # Replace with your actual docs URL
+```
+
+将`cron`修改为您想要定时同步的时间间隔，将`DOCS_BASE_URL`修改为您的 Mintlify 文档 URL。
+
+三、创建您的 Repo
+
+创建您的 Repo，将项目托管上 Github。
+
+您可以到 Actions 内手动测试一下该 Workflow 是否生效。
+
+---
+
+项目例子：[Modellix Skill](https://github.com/Modellix/modellix-skill)
+
+希望各位喜欢该项目～
