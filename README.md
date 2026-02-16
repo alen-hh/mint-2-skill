@@ -21,7 +21,7 @@ A GitHub Action periodically syncs content from `/skill.md` and `/llms.txt` into
 
 ### 1. Clone this project
 
-`git clone xxx`
+`git clone https://github.com/alen-hh/mint-2-skill.git`
 
 ### 2. Configure the cron schedule and docs URL
 
